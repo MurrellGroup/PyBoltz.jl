@@ -13,7 +13,7 @@ using TMscore
         sequence = LongAA(structure["A"], standardselector)
         fasta_file = joinpath(dir, "1TIT.fasta")
         write(fasta_file, ">seq|protein|empty\n$sequence\n")
-        refolded_structure = predict(MolecularStructure, fasta_file; seed=0)
+        refolded_structure = predict(MolecularStructure, fasta_file; seed=0, accelerator="cpu")
         @test refolded_structure isa MolecularStructure
         @test tmscore(structure, refolded_structure).tmscore > 0.5
     end
