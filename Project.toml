@@ -1,0 +1,13 @@
+name = "Boltz"
+uuid = "0bca4874-a2b8-4dca-bc03-d2d86e344f1f"
+authors = ["Anton Oresten and Aron Stålmarck"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1.10"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
