@@ -8,7 +8,7 @@ Julia bindings for the [boltz](https://github.com/jwohlwend/boltz) Python packag
 
 ```julia
 using Pkg
-Pkg.Registry.add("https://github.com/MurrellGroup/MurrellGroupRegistry")
+Pkg.Registry.add(url="https://github.com/MurrellGroup/MurrellGroupRegistry")
 Pkg.add("Boltz")
 ```
 
