@@ -4,6 +4,33 @@
 
 Julia bindings for the [boltz](https://github.com/jwohlwend/boltz) Python package.
 
+## Installation
+
+```julia
+using Pkg
+Pkg.Registry.add("https://github.com/MurrellGroup/MurrellGroupRegistry")
+Pkg.add("Boltz")
+```
+
 ## Usage
 
-The `predict` function takes an input path and keyword arguments, which get mapped to the `boltz predict` command.
+The `predict` function takes an input path, and options as keyword arguments, which get mapped to the `boltz predict` command.
+
+### Getting output in a directory
+
+```julia
+using Boltz
+
+write("1CRN.fasta", ">1CRN|protein|empty\nTTCCPSIVARSNFNVCRLPGTPEAICATYTGCIIIPGATCPGDYAN")
+Boltz.predict("1CRN.fasta")
+```
+
+### Getting the folded structure directly
+
+```julia
+using BioStructures # activates extension
+
+structure = Boltz.predict(MolecularStructure, "1CRN.fasta")
+```
+
+See `?Boltz.predict` for keyword arguments.

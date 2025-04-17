@@ -1,21 +1,35 @@
 name = "Boltz"
 uuid = "0bca4874-a2b8-4dca-bc03-d2d86e344f1f"
 authors = ["Anton Oresten and Aron Stålmarck"]
-version = "1.0.0-DEV"
+version = "0.0.1"
 
 [deps]
 CondaPkg = "992eb4ea-22a4-4c89-a5bb-47a3300528ab"
 PythonCall = "6099a3de-0909-46bc-b1f4-468b9a2dfc0d"
 Scratch = "6c6a2e73-6563-6170-7368-637461726353"
 
+[weakdeps]
+BioStructures = "de9282ab-8554-53be-b2d6-f6c222edabfc"
+
+[extensions]
+BioStructuresExt = "BioStructures"
+
 [compat]
-CondaPkg = "0.2.28"
-PythonCall = "0.9.24"
-Scratch = "1.2.1"
+BioAlignments = "3.1.0"
+BioSequences = "3"
+BioStructures = "4"
+CondaPkg = "0.2"
+PythonCall = "0.9"
+Scratch = "1"
+TMscore = "0.0.2"
 julia = "1.10"
 
 [extras]
+BioAlignments = "00701ae9-d1dc-5365-b64a-a3a3ebf5695e"
+BioSequences = "7e6ae17a-c86d-528c-b3b9-7f778a29fe59"
+BioStructures = "de9282ab-8554-53be-b2d6-f6c222edabfc"
+TMscore = "6e960f36-814a-4ceb-8c87-6ab5da0e9bff"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test"]
+test = ["Test", "BioAlignments", "BioSequences", "BioStructures", "TMscore"]
