@@ -38,6 +38,6 @@ jobs:
           arch: ${{ matrix.arch }}
       - uses: julia-actions/cache@v2
       - name: registry_add
-        run: julia -e 'using Pkg; Pkg.Registry.add(url="https://github.com/MurrellGroup/MurrellGroupRegistry")'
+        run: julia -e 'using Pkg; pkg"registry add https://github.com/MurrellGroup/MurrellGroupRegistry"'
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
