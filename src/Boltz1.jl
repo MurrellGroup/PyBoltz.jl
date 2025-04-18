@@ -1,4 +1,4 @@
-module Boltz
+module Boltz1
 
 import PythonCall # for boltz predict command
 

@@ -1,6 +1,6 @@
-# Boltz.jl
+# Boltz1.jl
 
-[![Build Status](https://github.com/MurrellGroup/Boltz.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/MurrellGroup/Boltz.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Build Status](https://github.com/MurrellGroup/Boltz1.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/MurrellGroup/Boltz1.jl/actions/workflows/CI.yml?query=branch%3Amain)
 
 Julia bindings for the [boltz](https://github.com/jwohlwend/boltz) Python package.
 
@@ -9,7 +9,7 @@ Julia bindings for the [boltz](https://github.com/jwohlwend/boltz) Python packag
 ```julia
 using Pkg
 pkg"registry add https://github.com/MurrellGroup/MurrellGroupRegistry"
-pkg"add Boltz"
+pkg"add Boltz1"
 ```
 
 ## Usage
@@ -19,10 +19,10 @@ The `predict` function takes an input path, and options as keyword arguments, wh
 ### Getting output in a directory
 
 ```julia
-using Boltz
+using Boltz1
 
 write("1CRN.fasta", ">1CRN|protein|empty\nTTCCPSIVARSNFNVCRLPGTPEAICATYTGCIIIPGATCPGDYAN")
-Boltz.predict("1CRN.fasta")
+predict("1CRN.fasta")
 ```
 
 ### Getting the folded structure directly
@@ -30,7 +30,7 @@ Boltz.predict("1CRN.fasta")
 ```julia
 using BioStructures # activates extension
 
-structure = Boltz.predict(MolecularStructure, "1CRN.fasta")
+structure = predict(MolecularStructure, "1CRN.fasta")
 ```
 
-See `?Boltz.predict` for keyword arguments.
+See `?predict` for keyword arguments.

@@ -1,4 +1,4 @@
-using Boltz
+using Boltz1
 using Test
 
 using BioAlignments
@@ -6,7 +6,7 @@ using BioSequences
 using BioStructures
 using TMscore
 
-@testset "Boltz.jl" begin
+@testset "Boltz1.jl" begin
 
     mktempdir() do dir
         structure = retrievepdb("1TIT"; dir)

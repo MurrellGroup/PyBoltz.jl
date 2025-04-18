@@ -1,6 +1,6 @@
 module BioStructuresExt
 
-using Boltz
+using Boltz1
 using BioStructures
 
 function read_boltz_cif(path::AbstractString)
@@ -10,9 +10,9 @@ function read_boltz_cif(path::AbstractString)
     return MolecularStructure(mmcifdict)
 end
 
-function Boltz.predict(::Type{MolecularStructure}, input::AbstractString; options...)
+function Boltz1.predict(::Type{MolecularStructure}, input::AbstractString; options...)
     mktempdir() do out_dir
-        Boltz.predict(input; out_dir, options...)
+        Boltz1.predict(input; out_dir, options...)
         name = splitext(basename(input))[1]
         path = joinpath(out_dir, "boltz_results_$name/predictions/$name/$(name)_model_0.cif")
         return read_boltz_cif(path)
