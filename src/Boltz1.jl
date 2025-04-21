@@ -15,12 +15,6 @@ Run `boltz predict` with the given input and options.
 
 ## Options
 
-### Boolean Flags
-- `write_full_pae::Bool`: Dump PAE to a npz file. Default: true.
-- `write_full_pde::Bool`: Dump PDE to a npz file. Default: false.
-- `override::Bool`: Override existing predictions. Default: false.
-- `use_msa_server::Bool`: Use MMSeqs2 server for MSA generation. Default: false.
-
 ### Numeric Options
 - `devices::Integer`: Number of devices to use. Default: 1.
 - `recycling_steps::Integer`: Number of recycling steps. Default: 3.
@@ -39,6 +33,12 @@ Defaults to a Scratch.jl-backed directory created at module init; call `clear_ca
 - `output_format::String`: 'pdb' or 'mmcif'. Default: 'mmcif'.
 - `msa_server_url::String`: MSA server URL; requires `use_msa_server=true`.
 - `msa_pairing_strategy::String`: 'greedy' or 'complete'; requires `use_msa_server=true`.
+
+### Boolean Flags
+- `write_full_pae::Bool`: Dump PAE to a npz file. Default: true.
+- `write_full_pde::Bool`: Dump PDE to a npz file. Default: false.
+- `override::Bool`: Override existing predictions. Default: false.
+- `use_msa_server::Bool`: Use MMSeqs2 server for MSA generation. Default: false.
 """
 predict(input::AbstractString; options...) = run(predict_cmd(input; options...))
 

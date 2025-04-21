@@ -1,7 +1,7 @@
 name = "Boltz1"
 uuid = "0bca4874-a2b8-4dca-bc03-d2d86e344f1f"
 authors = ["Anton Oresten and Aron Stålmarck"]
-version = "0.0.1"
+version = "0.0.2"
 
 [deps]
 CondaPkg = "992eb4ea-22a4-4c89-a5bb-47a3300528ab"
@@ -21,7 +21,7 @@ BioStructures = "4"
 CondaPkg = "0.2"
 PythonCall = "0.9"
 Scratch = "1"
-TMscore = "0.0.2"
+TMscore = "0.0.3"
 julia = "1.10"
 
 [extras]
