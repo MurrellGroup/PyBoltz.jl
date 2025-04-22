@@ -33,13 +33,13 @@ using TMscore
 
         @testset "Directory run with MSA" begin
             dir = mkdir(joinpath(tempdir, "batchedrunmsa"))
-            msafile = joinpath(dir, "1RND.a3m")
+            msafile = joinpath(dir, "1RND_msa.a3m")
             open(msafile, "w") do io
                 for i in 1:10
                     write(io, ">$i\n$(randaaseq(15))\n")
                 end
             end
-            fasta_file = joinpath(dir, "1MSA.fasta")
+            fasta_file = joinpath(dir, "1RND.fasta")
             write(fasta_file, ">seq|protein|$(msafile)\n$(randaaseq(15))\n")
             refolded_structures = predict(MolecularStructure, fasta_file; seed=0, accelerator="cpu")
             @test refolded_structures isa Vector{MolecularStructure}
