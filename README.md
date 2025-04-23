@@ -30,7 +30,9 @@ predict("1CRN.fasta")
 ```julia
 using BioStructures # activates extension
 
-structure = only(predict(MolecularStructure, "1CRN.fasta")) # only one element if path isn't a directory 
+structures = predict(MolecularStructure, "path/to/input_files") # batched, returning a vector of structures
+
+structure = only(predict(MolecularStructure, "1CRN.fasta")) # only one element if path isn't a directory
 ```
 
 See `?predict` for keyword arguments.
