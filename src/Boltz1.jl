@@ -2,11 +2,10 @@ module Boltz1
 
 import PythonCall # for boltz predict command
 
-export predict, clear_cache
+export predict
 
 using Scratch: @get_scratch!, delete_scratch!
 const CACHE_KEY = "boltz_cache"
-clear_cache() = delete_scratch!(CACHE_KEY)
 
 """
     predict(input; options...)
