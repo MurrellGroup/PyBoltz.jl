@@ -8,7 +8,7 @@ using TMscore
 
 # ENV["BOLTZ1_TEST_ACCELERATOR"] = "gpu"
 
-accelerator = get(ENV, "BOLTZ1_TEST_ACCELERATOR", "cpu")
+const accelerator = get(ENV, "BOLTZ1_TEST_ACCELERATOR", "cpu")
 
 @testset "Boltz1.jl" begin
 
