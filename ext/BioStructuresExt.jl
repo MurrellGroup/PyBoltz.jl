@@ -10,10 +10,10 @@ function read_boltz_cif(path::AbstractString)
     return MolecularStructure(mmcifdict)
 end
 
-function Boltz1.predict(::Type{MolecularStructure}, input::AbstractString; options...)
+function Boltz1.predict(input::AbstractVector{MolecularSchema}, ::Type{MolecularStructure}; options...)
     structures = MolecularStructure[]
     mktempdir() do out_dir
-        Boltz1.predict(input; out_dir, output_format="mmcif", options...)
+        predict(input; out_dir, output_format="mmcif", options...)
         prediction_paths = readdir(joinpath(out_dir, only(readdir(out_dir)), "predictions"); join=true)
         for prediction_path in prediction_paths
             cif_path = joinpath(prediction_path, basename(prediction_path)*"_model_0.cif")
@@ -21,6 +21,10 @@ function Boltz1.predict(::Type{MolecularStructure}, input::AbstractString; optio
         end
     end
     return structures
+end
+
+function Boltz1.predict(input::MolecularSchema, ::Type{MolecularStructure}; options...)
+    return Boltz1.predict([input], MolecularStructure; options...) |> only
 end
 
 end

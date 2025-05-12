@@ -6,47 +6,60 @@ using BioSequences
 using BioStructures
 using TMscore
 
+ENV["BOLTZ1_TEST_ACCELERATOR"] = "gpu"
+
+accelerator = get(ENV, "BOLTZ1_TEST_ACCELERATOR", "cpu")
+
 @testset "Boltz1.jl" begin
 
-    mktempdir() do tempdir
-
-        @testset "Single run" begin
-            structure = retrievepdb("1TIT"; dir=tempdir)
+    @testset "Single structure run" begin
+        mktempdir() do dir
+            structure = retrievepdb("1TIT"; dir)
             sequence = LongAA(structure["A"], standardselector)
-            fasta_file = joinpath(tempdir, "1TIT.fasta")
-            write(fasta_file, ">seq|protein|empty\n$sequence\n")
-            refolded_structure = predict(MolecularStructure, fasta_file; seed=0, accelerator="cpu")[1]
-            @test refolded_structure isa MolecularStructure
-            @test tmscore(structure, refolded_structure) > 0.5
+            input = MolecularSchema(
+                sequences = [
+                    protein(; id="A", sequence, msa="empty")
+                ]
+            )
+            predicted_structure = predict(input, MolecularStructure; seed=0, accelerator)
+            @test predicted_structure isa MolecularStructure
+            @test tmscore(structure, predicted_structure) > 0.5
         end
+    end
 
-        @testset "Directory run" begin
-            dir = mkdir(joinpath(tempdir, "batchedrun"))
-            write(joinpath(dir, "1RND.fasta"), ">seq|protein|empty\n$(randaaseq(10))\n")
-            write(joinpath(dir, "2RND.fasta"), ">seq|protein|empty\n$(randaaseq(20))\n")
-            refolded_structures = predict(MolecularStructure, dir; seed=0, accelerator="cpu")
-            @test refolded_structures isa Vector{MolecularStructure}
-            @test length(refolded_structures) == 2
-            @test refolded_structures[1] |> countresidues == 10
-            @test refolded_structures[2] |> countresidues == 20
+    @testset "Directory run" begin
+        mktempdir() do dir
+            schemas = [
+                MolecularSchema(
+                    sequences = [
+                        protein(; id="A", sequence=randaaseq(10), msa="empty"),
+                    ]
+                ),
+                MolecularSchema(
+                    sequences = [
+                        protein(; id="A", sequence=randaaseq(20), msa="empty"),
+                    ]
+                ),
+            ]
+            predicted_structures = predict(schemas, MolecularStructure; seed=0, accelerator)
+            @test predicted_structures isa Vector{MolecularStructure}
+            @test length(predicted_structures) == 2
+            @test predicted_structures[1] |> countresidues == 10
+            @test predicted_structures[2] |> countresidues == 20
         end
+    end
 
-        @testset "Directory run with MSA" begin
-            dir = mkdir(joinpath(tempdir, "batchedrunmsa"))
-            msafile = joinpath(dir, "1RND_msa.a3m")
-            open(msafile, "w") do io
-                for i in 1:10
-                    write(io, ">$i\n$(randaaseq(15))\n")
-                end
-            end
-            fasta_file = joinpath(dir, "1RND.fasta")
-            write(fasta_file, ">seq|protein|$(msafile)\n$(randaaseq(15))\n")
-            refolded_structures = predict(MolecularStructure, fasta_file; seed=0, accelerator="cpu")
-            @test refolded_structures isa Vector{MolecularStructure}
-            @test length(refolded_structures) == 1
-            @test refolded_structures[1] |> countresidues == 15
+    @testset "MSA run" begin
+        mktempdir() do dir
+            schema = MolecularSchema(
+                sequences = [
+                    protein(; id="A", sequence=randaaseq(15), msa=[randaaseq(15) for _ in 1:10]),
+                ]
+            )
+            predicted_structure = predict(schema, MolecularStructure; seed=0, accelerator)
+            @test predicted_structure isa MolecularStructure
+            @test predicted_structure |> countresidues == 15
         end
-
     end
 
 end

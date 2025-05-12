@@ -14,15 +14,23 @@ pkg"add Boltz1"
 
 ## Usage
 
-The `predict` function takes an input path, and options as keyword arguments, which get mapped to the `boltz predict` command.
+The `predict` function takes a `MolecularSchema`, and options as keyword arguments.
 
 ### Getting output in a directory
 
 ```julia
 using Boltz1
 
-write("1CRN.fasta", ">1CRN|protein|empty\nTTCCPSIVARSNFNVCRLPGTPEAICATYTGCIIIPGATCPGDYAN")
-predict("1CRN.fasta")
+input = MolecularSchema(
+    sequences = [
+        protein(id="A", sequence="TTCCPSIVARSNFNVCRLPGTPEAICATYTGCIIIPGATCPGDYAN"),
+        protein(id="B", sequence="TTCCPSIVARSNFNVCRLPGTPEALCATYTGCIIIPGATCPGDYAN")
+    ]
+)
+
+using BioStructures: MolecularStructure
+
+predicted_structure = predict(input, MolecularStructure)
 ```
 
 ### Getting the folded structure directly
