@@ -21,7 +21,7 @@ pkg"add Boltz1"
 ```julia
 using Boltz1
 
-schema = MolecularSchema(
+input = MolecularSchema(
     sequences = [
         protein(id="A", sequence="TTCCPSIVARSNFNVCRLPGTPEAICATYTGCIIIPGATCPGDYAN"),
     ]
@@ -29,7 +29,7 @@ schema = MolecularSchema(
 
 using BioStructures: MolecularStructure
 
-predicted_structure = predict(schema, MolecularStructure)
+predicted_structure = predict(input, MolecularStructure)
 ```
 
 ### `boltz predict` command binding
