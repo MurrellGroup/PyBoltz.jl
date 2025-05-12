@@ -16,7 +16,7 @@ One addition is that `msa` can be provided as a vector of strings.
 ## Ligand
 
 ```julia
-schema = MolecularSchema(
+schema1 = MolecularSchema(
     sequences = [
         protein(
             id = ["A", "B"],
@@ -33,13 +33,8 @@ schema = MolecularSchema(
         )
     ]
 )
-predict(schema)
-```
 
-## Pocket
-
-```julia
-schema = MolecularSchema(
+schema2 = MolecularSchema(
     sequences = [
         protein(
             id = ["A1"],
@@ -57,7 +52,6 @@ schema = MolecularSchema(
         )
     ]
 )
-predict(schema)
 ```
 """
 struct MolecularSchema <: AbstractDict{String,Any}

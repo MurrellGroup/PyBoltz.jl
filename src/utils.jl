@@ -1,3 +1,6 @@
+using YAML
+
+
 function predict_cmd(input::AbstractString; options...)
     options = merge((; cache=@get_scratch!(CACHE_KEY)), options)
     cmd_vec = String["boltz", "predict", input]

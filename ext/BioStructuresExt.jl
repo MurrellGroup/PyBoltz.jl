@@ -10,7 +10,7 @@ function read_boltz_cif(path::AbstractString)
     return MolecularStructure(mmcifdict)
 end
 
-function Boltz1.predict(input::AbstractVector{MolecularSchema}, ::Type{MolecularStructure}; options...)
+function Boltz1.predict(input, ::Type{MolecularStructure}; options...)
     structures = MolecularStructure[]
     mktempdir() do out_dir
         predict(input; out_dir, output_format="mmcif", options...)
