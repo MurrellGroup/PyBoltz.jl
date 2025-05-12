@@ -69,6 +69,6 @@ jobs:
         shell: julia --project=docs --color=yes {0}
         run: |
           using Documenter: DocMeta, doctest
-          using Einops
-          DocMeta.setdocmeta!(Einops, :DocTestSetup, :(using Einops); recursive=true)
-          doctest(Einops)
+          using Boltz1
+          DocMeta.setdocmeta!(Boltz1, :DocTestSetup, :(using Boltz1); recursive=true)
+          doctest(Boltz1)
