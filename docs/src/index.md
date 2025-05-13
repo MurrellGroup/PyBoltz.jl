@@ -1,16 +1,16 @@
 ```@meta
-CurrentModule = Boltz1
+CurrentModule = PyBoltz
 ```
 
-# Boltz1
+# PyBoltz
 
-Documentation for [Boltz1](https://github.com/MurrellGroup/Boltz1.jl).
+Documentation for [PyBoltz](https://github.com/MurrellGroup/PyBoltz.jl).
 
 ## Installation
 
 ```julia
 using Pkg
-pkg"add Boltz1"
+pkg"add PyBoltz"
 ```
 
 ## Contents

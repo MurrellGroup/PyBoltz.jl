@@ -1,4 +1,4 @@
-using Boltz1, Boltz1.Schema
+using PyBoltz, PyBoltz.Schema
 using Test
 
 using BioAlignments
@@ -8,11 +8,11 @@ using BioStructures
 include("TMscore.jl") # remove this once TMscore.jl is registered: https://github.com/JuliaRegistries/General/pull/130867
 using .TMscore
 
-# ENV["BOLTZ1_TEST_ACCELERATOR"] = "gpu"
+# ENV["PyBoltz_TEST_ACCELERATOR"] = "gpu"
 
-const accelerator = get(ENV, "BOLTZ1_TEST_ACCELERATOR", "cpu")
+const accelerator = get(ENV, "PyBoltz_TEST_ACCELERATOR", "cpu")
 
-@testset "Boltz1.jl" begin
+@testset "PyBoltz.jl" begin
 
     @testset "Single structure run" begin
         mktempdir() do dir

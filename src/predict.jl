@@ -6,8 +6,8 @@ Run Boltz-1 prediction with the given input, output type, and options.
 # Input types
 
 - `AbstractString`: Path to a FASTA/YAML file or directory (for batching).
-- `MolecularInput`: A single [`Boltz1.Schema.MolecularInput`](@ref) object.
-- `Vector{MolecularInput}`: A vector of [`Boltz1.Schema.MolecularInput`](@ref) objects for batching.
+- `MolecularInput`: A single [`PyBoltz.Schema.MolecularInput`](@ref) object.
+- `Vector{MolecularInput}`: A vector of [`PyBoltz.Schema.MolecularInput`](@ref) objects for batching.
 
 # Output types
 

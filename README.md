@@ -1,11 +1,11 @@
-# Boltz1.jl
+# PyBoltz.jl
 
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://MurrellGroup.github.io/Boltz1.jl/dev/)
-[![Build Status](https://github.com/MurrellGroup/Boltz1.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/MurrellGroup/Boltz1.jl/actions/workflows/CI.yml?query=branch%3Amain)
-[![Coverage](https://codecov.io/gh/MurrellGroup/Boltz1.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/MurrellGroup/Boltz1.jl)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://MurrellGroup.github.io/PyBoltz.jl/dev/)
+[![Build Status](https://github.com/MurrellGroup/PyBoltz.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/MurrellGroup/PyBoltz.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Coverage](https://codecov.io/gh/MurrellGroup/PyBoltz.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/MurrellGroup/PyBoltz.jl)
 
 > [!WARNING]
-> Boltz currently fails when using CPU as accelerator (and thus also GitHub's default CI). See https://github.com/MurrellGroup/Boltz1.jl/issues/2 for tracker.
+> Boltz currently fails when using CPU as accelerator (and thus also GitHub's default CI). See https://github.com/MurrellGroup/PyBoltz.jl/issues/2 for tracker.
 
 Julia bindings for the [boltz](https://github.com/jwohlwend/boltz) Python package.
 
@@ -13,7 +13,7 @@ Julia bindings for the [boltz](https://github.com/jwohlwend/boltz) Python packag
 
 ```julia
 using Pkg
-pkg"add Boltz1"
+pkg"add PyBoltz"
 ```
 
 ## Quickstart
@@ -21,7 +21,7 @@ pkg"add Boltz1"
 ### In-memory input/output
 
 ```julia
-using Boltz1, Boltz1.Schema
+using PyBoltz, PyBoltz.Schema
 
 input = MolecularInput(
     sequences = [
@@ -37,7 +37,7 @@ predicted_structure = predict(input, MolecularStructure)
 ### `boltz predict` command binding
 
 ```julia
-using Boltz1
+using PyBoltz
 
-Boltz1.predict(input_path; options...)
+PyBoltz.predict(input_path; options...)
 ```

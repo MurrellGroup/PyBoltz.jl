@@ -1,6 +1,6 @@
 module BioStructuresExt
 
-using Boltz1
+using PyBoltz
 using BioStructures
 
 function read_boltz_cif(path::AbstractString)
@@ -10,7 +10,7 @@ function read_boltz_cif(path::AbstractString)
     return MolecularStructure(mmcifdict)
 end
 
-function Boltz1.predict(input, ::Type{MolecularStructure}; options...)
+function PyBoltz.predict(input, ::Type{MolecularStructure}; options...)
     structures = MolecularStructure[]
     mktempdir() do out_dir
         predict(input; out_dir, output_format="mmcif", options...)
@@ -23,8 +23,8 @@ function Boltz1.predict(input, ::Type{MolecularStructure}; options...)
     return structures
 end
 
-function Boltz1.predict(input::Boltz1.Schema.MolecularInput, ::Type{MolecularStructure}; options...)
-    return Boltz1.predict([input], MolecularStructure; options...) |> only
+function PyBoltz.predict(input::PyBoltz.Schema.MolecularInput, ::Type{MolecularStructure}; options...)
+    return PyBoltz.predict([input], MolecularStructure; options...) |> only
 end
 
 end

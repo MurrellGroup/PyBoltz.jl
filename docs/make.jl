@@ -1,14 +1,14 @@
-using Boltz1
+using PyBoltz
 using Documenter
 
-DocMeta.setdocmeta!(Boltz1, :DocTestSetup, :(using Boltz1); recursive=true)
+DocMeta.setdocmeta!(PyBoltz, :DocTestSetup, :(using PyBoltz); recursive=true)
 
 makedocs(;
-    modules=[Boltz1],
+    modules=[PyBoltz],
     authors="Anton Oresten and Aron Stålmarck",
-    sitename="Boltz1.jl",
+    sitename="PyBoltz.jl",
     format=Documenter.HTML(;
-        canonical="https://MurrellGroup.github.io/Boltz1.jl",
+        canonical="https://MurrellGroup.github.io/PyBoltz.jl",
         edit_link="main",
         assets=String[],
     ),
@@ -20,6 +20,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/MurrellGroup/Boltz1.jl",
+    repo="github.com/MurrellGroup/PyBoltz.jl",
     devbranch="main",
 )

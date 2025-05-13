@@ -66,6 +66,6 @@ jobs:
         shell: julia --project=docs --color=yes {0}
         run: |
           using Documenter: DocMeta, doctest
-          using Boltz1
-          DocMeta.setdocmeta!(Boltz1, :DocTestSetup, :(using Boltz1); recursive=true)
-          doctest(Boltz1)
+          using PyBoltz
+          DocMeta.setdocmeta!(PyBoltz, :DocTestSetup, :(using PyBoltz); recursive=true)
+          doctest(PyBoltz)

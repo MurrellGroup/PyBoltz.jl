@@ -1,4 +1,4 @@
-name = "Boltz1"
+name = "PyBoltz"
 uuid = "0bca4874-a2b8-4dca-bc03-d2d86e344f1f"
 authors = ["Anton Oresten and Aron Stålmarck"]
 version = "0.1.0"
