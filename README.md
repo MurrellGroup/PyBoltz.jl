@@ -5,7 +5,7 @@
 [![Coverage](https://codecov.io/gh/MurrellGroup/Boltz1.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/MurrellGroup/Boltz1.jl)
 
 > [!WARNING]
-> Boltz currently fails when using CPU as accelerator (and thus GitHub CI) See https://github.com/MurrellGroup/Boltz1.jl/issues/2.
+> Boltz currently fails when using CPU as accelerator (and thus also GitHub's default CI). See https://github.com/MurrellGroup/Boltz1.jl/issues/2.
 
 Julia bindings for the [boltz](https://github.com/jwohlwend/boltz) Python package.
 
