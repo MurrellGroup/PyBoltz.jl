@@ -10,7 +10,6 @@ Julia bindings for the [boltz](https://github.com/jwohlwend/boltz) Python packag
 
 ```julia
 using Pkg
-pkg"registry add https://github.com/MurrellGroup/MurrellGroupRegistry"
 pkg"add Boltz1"
 ```
 
@@ -23,7 +22,7 @@ using Boltz1, Boltz1.Schema
 
 input = MolecularInput(
     sequences = [
-        protein(id="A", sequence="TTCCPSIVARSNFNVCRLPGTPEAICATYTGCIIIPGATCPGDYAN"),
+        protein(id="A", sequence="TTCCPSIVARSNFNVCRLPGTPEAICATYTGCIIIPGATCPGDYAN", msa="empty"),
     ]
 )
 

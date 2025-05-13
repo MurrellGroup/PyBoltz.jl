@@ -27,7 +27,7 @@ CondaPkg = "0.2"
 ProteinChains = "0.7"
 PythonCall = "0.9"
 Scratch = "1"
-TMscore = "0.0.3"
+TMscore_jll = "1.0.0"
 YAML = "0.4"
 julia = "1.10"
 
@@ -35,8 +35,8 @@ julia = "1.10"
 BioAlignments = "00701ae9-d1dc-5365-b64a-a3a3ebf5695e"
 BioSequences = "7e6ae17a-c86d-528c-b3b9-7f778a29fe59"
 BioStructures = "de9282ab-8554-53be-b2d6-f6c222edabfc"
-TMscore = "6e960f36-814a-4ceb-8c87-6ab5da0e9bff"
+TMscore_jll = "1d8dad79-2f3d-554c-bf22-543753cb6ff4"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test", "BioAlignments", "BioSequences", "BioStructures", "TMscore"]
+test = ["Test", "BioAlignments", "BioSequences", "BioStructures", "TMscore_jll"]
