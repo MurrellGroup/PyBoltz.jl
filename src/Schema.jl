@@ -15,6 +15,10 @@ Implemented according to the schema definition in the
 [boltz documentation](https://github.com/jwohlwend/boltz/blob/a9b3abc2c1f90f26b373dd1bcb7afb5a3cb40293/docs/prediction.md),
 allowing for easy in-memory construction of the schema.
 
+Sequences passed to `protein`, `dna`, and `rna` get automatically converted to strings,
+so any type (e.g. `BioSequences.BioSequence`) that has sensible `Base.string`-conversion
+defined will work.
+
 One addition is that `msa` can be provided as a vector of strings.
 
 # Examples
