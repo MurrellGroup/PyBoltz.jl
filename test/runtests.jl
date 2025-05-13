@@ -8,7 +8,7 @@ using BioStructures
 include("TMscore.jl") # remove this once TMscore.jl is registered: https://github.com/JuliaRegistries/General/pull/130867
 using .TMscore
 
-ENV["BOLTZ1_TEST_ACCELERATOR"] = "gpu"
+# ENV["BOLTZ1_TEST_ACCELERATOR"] = "gpu"
 
 const accelerator = get(ENV, "BOLTZ1_TEST_ACCELERATOR", "cpu")
 
