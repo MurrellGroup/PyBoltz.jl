@@ -7,7 +7,7 @@
 > [!WARNING]
 > Boltz currently fails when using CPU as accelerator (and thus also GitHub's default CI). See https://github.com/MurrellGroup/PyBoltz.jl/issues/2 for tracker.
 
-Julia bindings for the [boltz](https://github.com/jwohlwend/boltz) Python package.
+Bindings for Python's [boltz](https://github.com/jwohlwend/boltz) in Julia for biomolecular structure prediction.
 
 ## Installation
 
