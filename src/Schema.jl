@@ -12,7 +12,7 @@ const BOLTZ_SCHEMA_VERSION = 1
 A dictionary object that can be written to a YAML file.
 
 Implemented according to the schema definition in the
-[Boltz1 documentation](https://github.com/jwohlwend/boltz/blob/a9b3abc2c1f90f26b373dd1bcb7afb5a3cb40293/docs/prediction.md),
+[boltz documentation](https://github.com/jwohlwend/boltz/blob/a9b3abc2c1f90f26b373dd1bcb7afb5a3cb40293/docs/prediction.md),
 allowing for easy in-memory construction of the schema.
 
 One addition is that `msa` can be provided as a vector of strings.
