@@ -4,6 +4,9 @@
 [![Build Status](https://github.com/MurrellGroup/Boltz1.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/MurrellGroup/Boltz1.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/MurrellGroup/Boltz1.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/MurrellGroup/Boltz1.jl)
 
+> [!WARNING]
+> Boltz currently fails when using CPU as accelerator (and thus GitHub CI) See https://github.com/MurrellGroup/Boltz1.jl/issues/2.
+
 Julia bindings for the [boltz](https://github.com/jwohlwend/boltz) Python package.
 
 ## Installation
