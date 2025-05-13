@@ -6,28 +6,28 @@
 predict
 ```
 
-## Schema
+## `Schema` submodule
 
 ```@docs
-MolecularSchema
+Boltz1.Schema.MolecularInput
 ```
 
 ### Sequences
 
-The following sequence types go the `sequences` keyword argument of `MolecularSchema`.
+The following sequence types go into the `sequences` vector keyword argument of `MolecularInput`.
 
 ```@docs
-protein
-dna
-rna
-ligand
+Boltz1.Schema.protein
+Boltz1.Schema.dna
+Boltz1.Schema.rna
+Boltz1.Schema.ligand
 ```
 
 ### Constraints
 
-The following constraint types go the `constraints` keyword argument of `MolecularSchema`.
+The following constraint types go into the `constraints` vector keyword argument of `MolecularInput`.
 
 ```@docs
-bond
-pocket
+Boltz1.Schema.bond
+Boltz1.Schema.pocket
 ```

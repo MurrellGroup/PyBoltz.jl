@@ -19,9 +19,9 @@ pkg"add Boltz1"
 ### In-memory input/output
 
 ```julia
-using Boltz1
+using Boltz1, Boltz1.Schema
 
-input = MolecularSchema(
+input = MolecularInput(
     sequences = [
         protein(id="A", sequence="TTCCPSIVARSNFNVCRLPGTPEAICATYTGCIIIPGATCPGDYAN"),
     ]
@@ -37,5 +37,5 @@ predicted_structure = predict(input, MolecularStructure)
 ```julia
 using Boltz1
 
-Boltz1.predict(input_path, options...)
+Boltz1.predict(input_path; options...)
 ```

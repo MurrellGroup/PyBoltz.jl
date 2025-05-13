@@ -4,6 +4,7 @@ authors = ["Anton Oresten and Aron Stålmarck"]
 version = "0.1.0"
 
 [deps]
+Compat = "34da2185-b29b-5c13-b0c7-acf172513d20"
 CondaPkg = "992eb4ea-22a4-4c89-a5bb-47a3300528ab"
 PythonCall = "6099a3de-0909-46bc-b1f4-468b9a2dfc0d"
 Scratch = "6c6a2e73-6563-6170-7368-637461726353"
@@ -21,6 +22,7 @@ ProteinChainsExt = "ProteinChains"
 BioAlignments = "3"
 BioSequences = "3"
 BioStructures = "4"
+Compat = "4.16"
 CondaPkg = "0.2"
 ProteinChains = "0.7"
 PythonCall = "0.9"

@@ -6,8 +6,8 @@ Run Boltz-1 prediction with the given input, output type, and options.
 # Input types
 
 - `AbstractString`: Path to a FASTA/YAML file or directory (for batching).
-- `MolecularSchema`: A single [`MolecularSchema`](@ref) object.
-- `Vector{MolecularSchema}`: A vector of [`MolecularSchema`](@ref) objects for batching.
+- `MolecularInput`: A single [`Boltz1.Schema.MolecularInput`](@ref) object.
+- `Vector{MolecularInput}`: A vector of [`Boltz1.Schema.MolecularInput`](@ref) objects for batching.
 
 # Output types
 
@@ -16,8 +16,8 @@ By default, raw results will be written to disk in the `out_dir` directory (see 
 For convenience, `output_type` can be provided as a second argument to reduce manual file I/O.
 
 If `output_type` is provided, the function will return a
-single object if a `MolecularSchema` was provided as input,
-otherwise a vector if an `AbstractString` or `Vector{MolecularSchema}` was provided.
+single object if a `MolecularInput` was provided as input,
+otherwise a vector if an `AbstractString` or `Vector{MolecularInput}` was provided.
 
 The following output types are supported:
 
@@ -63,19 +63,19 @@ function predict(input_path::AbstractString; verbose=true, options...)
 end
 
 
-function predict(schemas::AbstractVector{MolecularSchema}; options...)
+function predict(inputs::AbstractVector{Schema.MolecularInput}; options...)
     mktempdir() do dir
-        schema_dir = joinpath(dir, "schemas")
-        mkdir(schema_dir)
+        input_dir = joinpath(dir, "inputs")
+        mkdir(input_dir)
         msa_dir = joinpath(dir, "msas")
         mkdir(msa_dir)
-        for (i, schema) in enumerate(schemas)
-            path = joinpath(schema_dir, "schema$i.yaml")
-            YAML.write_file(path, MSAs_to_files!(deepcopy(schema), msa_dir; prefix=i))
+        for (i, input) in enumerate(inputs)
+            path = joinpath(input_dir, "input$i.yaml")
+            YAML.write_file(path, MSAs_to_files!(deepcopy(input), msa_dir; prefix=i))
         end
-        predict(schema_dir; options...)
+        predict(input_dir; options...)
     end
     return nothing
 end
 
-predict(schema::MolecularSchema; options...) = predict([schema]; options...)
+predict(input::Schema.MolecularInput; options...) = predict([input]; options...)

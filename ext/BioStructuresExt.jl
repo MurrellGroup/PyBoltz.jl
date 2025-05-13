@@ -23,7 +23,7 @@ function Boltz1.predict(input, ::Type{MolecularStructure}; options...)
     return structures
 end
 
-function Boltz1.predict(input::MolecularSchema, ::Type{MolecularStructure}; options...)
+function Boltz1.predict(input::Boltz1.Schema.MolecularInput, ::Type{MolecularStructure}; options...)
     return Boltz1.predict([input], MolecularStructure; options...) |> only
 end
 

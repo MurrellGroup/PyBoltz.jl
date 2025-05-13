@@ -1,4 +1,4 @@
-using Boltz1
+using Boltz1, Boltz1.Schema
 using Test
 
 using BioAlignments
@@ -16,7 +16,7 @@ const accelerator = get(ENV, "BOLTZ1_TEST_ACCELERATOR", "cpu")
         mktempdir() do dir
             structure = retrievepdb("1TIT"; dir)
             sequence = LongAA(structure["A"], standardselector)
-            input = MolecularSchema(
+            input = MolecularInput(
                 sequences = [
                     protein(; id="A", sequence, msa="empty")
                 ]
@@ -29,19 +29,19 @@ const accelerator = get(ENV, "BOLTZ1_TEST_ACCELERATOR", "cpu")
 
     @testset "Directory run" begin
         mktempdir() do dir
-            schemas = [
-                MolecularSchema(
+            inputs = [
+                MolecularInput(
                     sequences = [
                         protein(; id="A", sequence=randaaseq(10), msa="empty"),
                     ]
                 ),
-                MolecularSchema(
+                MolecularInput(
                     sequences = [
                         protein(; id="A", sequence=randaaseq(20), msa="empty"),
                     ]
                 ),
             ]
-            predicted_structures = predict(schemas, MolecularStructure; seed=0, accelerator)
+            predicted_structures = predict(inputs, MolecularStructure; seed=0, accelerator)
             @test predicted_structures isa Vector{MolecularStructure}
             @test length(predicted_structures) == 2
             @test predicted_structures[1] |> countresidues == 10
@@ -51,12 +51,12 @@ const accelerator = get(ENV, "BOLTZ1_TEST_ACCELERATOR", "cpu")
 
     @testset "MSA run" begin
         mktempdir() do dir
-            schema = MolecularSchema(
+            input = MolecularInput(
                 sequences = [
                     protein(; id="A", sequence=randaaseq(15), msa=[randaaseq(15) for _ in 1:10]),
                 ]
             )
-            predicted_structure = predict(schema, MolecularStructure; seed=0, accelerator)
+            predicted_structure = predict(input, MolecularStructure; seed=0, accelerator)
             @test predicted_structure isa MolecularStructure
             @test predicted_structure |> countresidues == 15
         end

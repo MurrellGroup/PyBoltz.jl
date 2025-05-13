@@ -1,7 +1,13 @@
+module Schema
+
+export MolecularInput
+export protein, dna, rna, ligand
+export bond, pocket
+
 const BOLTZ_SCHEMA_VERSION = 1
 
 """
-    MolecularSchema
+    MolecularInput
 
 A dictionary object that can be written to a YAML file.
 
@@ -16,7 +22,9 @@ One addition is that `msa` can be provided as a vector of strings.
 ## Ligand
 
 ```julia
-schema1 = MolecularSchema(
+using Boltz1.Schema
+
+input1 = MolecularInput(
     sequences = [
         protein(
             id = ["A", "B"],
@@ -34,7 +42,7 @@ schema1 = MolecularSchema(
     ]
 )
 
-schema2 = MolecularSchema(
+input2 = MolecularInput(
     sequences = [
         protein(
             id = ["A1"],
@@ -54,22 +62,22 @@ schema2 = MolecularSchema(
 )
 ```
 """
-struct MolecularSchema <: AbstractDict{String,Any}
+struct MolecularInput <: AbstractDict{String,Any}
     dict::Dict{String,Any}
 end
 
-function MolecularSchema(;
+function MolecularInput(;
     sequences,
     constraints = nothing
 )
     dict = Dict{String,Any}("version" => BOLTZ_SCHEMA_VERSION, "sequences" => sequences)
     !isnothing(constraints) && (dict["constraints"] = constraints)
-    return MolecularSchema(dict)
+    return MolecularInput(dict)
 end
 
-Base.length(schema::MolecularSchema) = length(schema.dict)
-Base.iterate(schema::MolecularSchema, args...) = iterate(schema.dict, args...)
-Base.getindex(schema::MolecularSchema, key::AbstractString) = schema.dict[key]
+Base.length(input::MolecularInput) = length(input.dict)
+Base.iterate(input::MolecularInput, args...) = iterate(input.dict, args...)
+Base.getindex(input::MolecularInput, key::AbstractString) = input.dict[key]
 
 
 ## sequences
@@ -78,6 +86,7 @@ Base.getindex(schema::MolecularSchema, key::AbstractString) = schema.dict[key]
     protein(; id, sequence, msa=nothing, modifications=nothing, cyclic=nothing)
 
 ```julia
+using Boltz1.Schema: protein
 protein(id="A", sequence="RHKDE")
 protein(id=["A", "B"], sequence="RHKDE")
 protein(id="A", sequence="RHKDE", msa="path/to/msa.a3m")
@@ -122,6 +131,7 @@ end
     dna(; id, sequence)
 
 ```julia
+using Boltz1.Schema: dna
 dna(id="A", sequence="GATTACA")
 dna(id=["A", "B"], sequence="GATTACA")
 dna(id="A", sequence="GATTACA", modifications=[(2, "6MA"), (6, "5MC")]) # untested
@@ -134,6 +144,7 @@ const dna = (; kwargs...) -> _dna_or_rna("dna"; kwargs...)
     rna(; id, sequence)
 
 ```julia
+using Boltz1.Schema: rna
 rna(id="A", sequence="GAUUACA")
 rna(id=["A", "B"], sequence="GAUUACA")
 rna(id="A", sequence="GAUUACA", modifications=[(2, "I"), (3, "PSU")]) # untested
@@ -147,6 +158,7 @@ const rna = (; kwargs...) -> _dna_or_rna("rna"; kwargs...)
     ligand(; id, smiles=nothing, ccd=nothing)
 
 ```julia
+using Boltz1.Schema: ligand
 ligand(id="C", smiles="C1=CC=CC=C1")
 ligand(id=["D", "E"], ccd="SAH")
 ```
@@ -170,6 +182,7 @@ end
     bond(; atom1, atom2)
 
 ```julia
+using Boltz1.Schema: bond
 # atom1 and atom2 are tuples of (chain_id, residue_index, atom_name)
 bond(atom1=("A", 1, "CA"), atom2=("B", 2, "CA"))
 ```
@@ -185,6 +198,7 @@ end
     pocket(; binder, contacts)
 
 ```julia
+using Boltz1.Schema: pocket
 # binder is a chain_id
 # contacts is a vector of vectors of (chain_id, residue_index)
 pocket(binder="A", contacts=[["B", 1], ["C", 2]])
@@ -195,4 +209,6 @@ function pocket(;
     contacts::Vector{Tuple{String,Int}}
 )
     return Dict("pocket" => Dict{String,Any}("binder" => binder, "contacts" => [[c...] for c in contacts]))
+end
+
 end
