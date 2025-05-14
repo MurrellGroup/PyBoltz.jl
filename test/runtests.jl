@@ -33,21 +33,37 @@ const accelerator = get(ENV, "PyBoltz_TEST_ACCELERATOR", "cpu")
         mktempdir() do dir
             inputs = [
                 MolecularInput(
+                    name = "Z",
                     sequences = [
                         protein(; id="A", sequence=randaaseq(10), msa="empty"),
                     ]
                 ),
                 MolecularInput(
+                    name = "X",
+                    sequences = [
+                        protein(; id="A", sequence=randaaseq(30), msa="empty"),
+                    ]
+                ),
+                MolecularInput(
+                    name = "Y",
                     sequences = [
                         protein(; id="A", sequence=randaaseq(20), msa="empty"),
+                    ]
+                ),
+                MolecularInput(
+                    name = "W",
+                    sequences = [
+                        protein(; id="A", sequence=randaaseq(40), msa="empty"),
                     ]
                 ),
             ]
             predicted_structures = predict(inputs, MolecularStructure; seed=0, accelerator)
             @test predicted_structures isa Vector{MolecularStructure}
-            @test length(predicted_structures) == 2
-            @test predicted_structures[1] |> countresidues == 10
-            @test predicted_structures[2] |> countresidues == 20
+            @test length(predicted_structures) == 4
+            @testset "Order preservation" begin
+                @test countresidues.(predicted_structures) == [10, 30, 20, 40]
+                @test [predicted_structure.name for predicted_structure in predicted_structures] == ["Z", "X", "Y", "W"]
+            end
         end
     end
 
