@@ -63,6 +63,8 @@ function predict(input_path::AbstractString; verbose=true, options...)
 end
 
 
+const PYBOLTZ_INPUT_INDEX_PREFIX = "__pyboltz_index_"
+
 function predict(inputs::AbstractVector{Schema.MolecularInput}; options...)
     mktempdir() do dir
         input_dir = joinpath(dir, "inputs")
@@ -70,8 +72,8 @@ function predict(inputs::AbstractVector{Schema.MolecularInput}; options...)
         msa_dir = joinpath(dir, "msas")
         mkdir(msa_dir)
         for (i, input) in enumerate(inputs)
-            name = get(input, "name", "nameless_$i")
-            path = joinpath(input_dir, "$name.yaml")
+            name = get(input, "name", "noname")
+            path = joinpath(input_dir, "$(PYBOLTZ_INPUT_INDEX_PREFIX)$(i)_$name.yaml")
             YAML.write_file(path, MSAs_to_files!(deepcopy(input), msa_dir; prefix=i))
         end
         predict(input_dir; options...)
