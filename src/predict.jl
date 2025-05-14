@@ -52,7 +52,8 @@ Defaults to a Scratch.jl-backed directory created at module init; call `clear_ca
 - `override::Bool`: Override existing predictions. Default: false.
 - `use_msa_server::Bool`: Use MMSeqs2 server for MSA generation. Default: false.
 """
-function predict(input_path::AbstractString; verbose=true, options...)
+function predict(input_path::AbstractString; verbose=true, _prefix_index=false, options...)
+    @assert !_prefix_index "`_prefix_index` is reserved for internal use"
     cmd = predict_cmd(input_path; options...)
     if verbose
         run(cmd)
@@ -65,7 +66,7 @@ end
 
 const PYBOLTZ_INPUT_INDEX_PREFIX = "__pyboltz_index_"
 
-function predict(inputs::AbstractVector{Schema.MolecularInput}; options...)
+function predict(inputs::AbstractVector{Schema.MolecularInput}; _prefix_index=false, options...)
     mktempdir() do dir
         input_dir = joinpath(dir, "inputs")
         mkdir(input_dir)
@@ -73,8 +74,9 @@ function predict(inputs::AbstractVector{Schema.MolecularInput}; options...)
         mkdir(msa_dir)
         for (i, input) in enumerate(inputs)
             name = get(input, "name", "noname")
-            path = joinpath(input_dir, "$(PYBOLTZ_INPUT_INDEX_PREFIX)$(i)_$name.yaml")
-            YAML.write_file(path, MSAs_to_files!(deepcopy(input), msa_dir; prefix=i))
+            prefix = _prefix_index ? "$(PYBOLTZ_INPUT_INDEX_PREFIX)$(i)_" : ""
+            path = joinpath(input_dir, "$prefix$name.yaml")
+            YAML.write_file(path, MSAs_to_files!(deepcopy(input), msa_dir; prefix=prefix))
         end
         predict(input_dir; options...)
     end

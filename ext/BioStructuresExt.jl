@@ -12,7 +12,11 @@ end
 
 function PyBoltz.predict(input, ::Type{MolecularStructure}; options...)
     mktempdir() do out_dir
-        predict(input; out_dir, output_format="mmcif", options...)
+        predict(input;
+            _prefix_index=(input isa AbstractVector{PyBoltz.Schema.MolecularInput}),
+            out_dir,
+            output_format="mmcif",
+            options...)
         prediction_paths = readdir(joinpath(out_dir, only(readdir(out_dir)), "predictions"); join=true)
         prediction_names = basename.(prediction_paths)
         structures = MolecularStructure[]
