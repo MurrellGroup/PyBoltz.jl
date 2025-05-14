@@ -15,20 +15,21 @@ Implemented according to the schema definition in the
 [boltz documentation](https://github.com/jwohlwend/boltz/blob/a9b3abc2c1f90f26b373dd1bcb7afb5a3cb40293/docs/prediction.md),
 allowing for easy in-memory construction of the schema.
 
-Sequences passed to `protein`, `dna`, and `rna` get automatically converted to strings,
-so any type (e.g. `BioSequences.BioSequence`) that has sensible `Base.string`-conversion
-defined will work.
+# Additions
 
-One addition is that `msa` can be provided as a vector of strings.
+- `name` is an optional argument that changes the name of the output file/structure.
+- Sequences passed to `protein`, `dna`, and `rna` get automatically converted to strings,
+  so any type (e.g. `BioSequences.BioSequence`) that has sensible `Base.string`-conversion
+  defined will work.
+- `msa` can be provided as a vector of sequences.
 
 # Examples
-
-## Ligand
 
 ```julia
 using PyBoltz.Schema
 
 input1 = MolecularInput(
+    name = "example1", # optional name YAML file (and thus output pdb/cif file)
     sequences = [
         protein(
             id = ["A", "B"],
@@ -72,17 +73,19 @@ end
 
 function MolecularInput(;
     sequences,
-    constraints = nothing
+    constraints = nothing,
+    name = nothing
 )
     dict = Dict{String,Any}("version" => BOLTZ_SCHEMA_VERSION, "sequences" => sequences)
     !isnothing(constraints) && (dict["constraints"] = constraints)
+    !isnothing(name) && (dict["name"] = name)
     return MolecularInput(dict)
 end
 
 Base.length(input::MolecularInput) = length(input.dict)
 Base.iterate(input::MolecularInput, args...) = iterate(input.dict, args...)
 Base.getindex(input::MolecularInput, key::AbstractString) = input.dict[key]
-
+Base.get(input::MolecularInput, key::AbstractString, default) = get(input.dict, key, default)
 
 ## sequences
 
