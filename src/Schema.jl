@@ -60,7 +60,7 @@ input2 = MolecularInput(
     constraints = [
         pocket(
             binder = "B1",
-            contacts = [ ["B1", 1], ["A1", 138] ]
+            contacts = [ ("B1", 1), ("A1", 138) ]
         )
     ]
 )
@@ -95,15 +95,15 @@ protein(id="A", sequence="RHKDE")
 protein(id=["A", "B"], sequence="RHKDE")
 protein(id="A", sequence="RHKDE", msa="path/to/msa.a3m")
 protein(id="A", sequence="RHKDE", msa=["RHKDE", "RHKDE"])
-protein(id="A", sequence="RHKDE", modifications=[(1, "MSE"), (5, "MSE")])
+protein(id="A", sequence="RHKDE", modifications=[(position=1, ccd="MSE"), (position=5, ccd="MSE")])
 protein(id="A", sequence="RHKDE", cyclic=true)
 ```
 """
 function protein(;
-    id::Union{AbstractString,Vector{<:AbstractString}},
+    id::Union{AbstractString,AbstractVector{<:AbstractString}},
     sequence,
-    msa::Union{AbstractString,Vector,Nothing} = nothing,
-    modifications::Union{Vector{Tuple{Int,String}},Nothing} = nothing,
+    msa::Union{Any,AbstractVector{<:Any},Nothing} = nothing,
+    modifications::Union{AbstractVector{<:NamedTuple{(:position,:ccd),<:Tuple{Integer,AbstractString}}},Nothing} = nothing,
     cyclic::Union{Bool,Nothing} = nothing
 )
     dict = Dict{String,Any}("id" => id, "sequence" => string(sequence))
@@ -114,19 +114,19 @@ function protein(;
             dict["msa"] = string.(msa)
         end
     end
-    !isnothing(modifications) && (dict["modifications"] = modifications)
+    !isnothing(modifications) && (dict["modifications"] = [Dict("position" => position, "ccd" => ccd) for (position, ccd) in modifications])
     !isnothing(cyclic) && (dict["cyclic"] = cyclic)
     return Dict("protein" => dict)
 end
 
 function _dna_or_rna(type;
-    id::Union{AbstractString,Vector{<:AbstractString}},
+    id::Union{AbstractString,AbstractVector{<:AbstractString}},
     sequence,
-    modifications::Union{Vector{Tuple{Int,String}},Nothing} = nothing,
+    modifications::Union{AbstractVector{<:NamedTuple{(:position,:ccd),<:Tuple{Integer,AbstractString}}},Nothing} = nothing,
     cyclic::Union{Bool,Nothing} = nothing
 )
     dict = Dict(type => Dict{String,Any}("id" => id, "sequence" => string(sequence)))
-    !isnothing(modifications) && (dict[type]["modifications"] = modifications)
+    !isnothing(modifications) && (dict[type]["modifications"] = [Dict("position" => position, "ccd" => ccd) for (position, ccd) in modifications])
     !isnothing(cyclic) && (dict[type]["cyclic"] = cyclic)
     return dict
 end
@@ -138,7 +138,7 @@ end
 using PyBoltz.Schema: dna
 dna(id="A", sequence="GATTACA")
 dna(id=["A", "B"], sequence="GATTACA")
-dna(id="A", sequence="GATTACA", modifications=[(2, "6MA"), (6, "5MC")]) # untested
+dna(id="A", sequence="GATTACA", modifications=[(position=2, ccd="6MA"), (position=6, ccd="5MC")]) # untested
 dna(id="A", sequence="GATTACA", cyclic=true)
 ```
 """
@@ -151,7 +151,7 @@ const dna = (; kwargs...) -> _dna_or_rna("dna"; kwargs...)
 using PyBoltz.Schema: rna
 rna(id="A", sequence="GAUUACA")
 rna(id=["A", "B"], sequence="GAUUACA")
-rna(id="A", sequence="GAUUACA", modifications=[(2, "I"), (3, "PSU")]) # untested
+rna(id="A", sequence="GAUUACA", modifications=[(position=2, ccd="I"), (position=3, ccd="PSU")]) # untested
 rna(id="A", sequence="GAUUACA", cyclic=true)
 ```
 """
@@ -168,7 +168,7 @@ ligand(id=["D", "E"], ccd="SAH")
 ```
 """
 function ligand(;
-    id::Union{AbstractString,Vector{<:AbstractString}},
+    id::Union{AbstractString,AbstractVector{<:AbstractString}},
     smiles::Union{AbstractString,Nothing} = nothing,
     ccd::Union{AbstractString,Nothing} = nothing,
 )
@@ -192,8 +192,8 @@ bond(atom1=("A", 1, "CA"), atom2=("B", 2, "CA"))
 ```
 """
 function bond(;
-    atom1::Tuple{String,Int,String},
-    atom2::Tuple{String,Int,String}
+    atom1::Tuple{AbstractString,Integer,AbstractString},
+    atom2::Tuple{AbstractString,Integer,AbstractString}
 )
     return Dict("bond" => Dict{String,Any}("atom1" => [atom1...], "atom2" => [atom2...]))
 end
@@ -210,7 +210,7 @@ pocket(binder="A", contacts=[["B", 1], ["C", 2]])
 """
 function pocket(;
     binder::AbstractString,
-    contacts::Vector{Tuple{String,Int}}
+    contacts::AbstractVector{<:Tuple{AbstractString,Integer}}
 )
     return Dict("pocket" => Dict{String,Any}("binder" => binder, "contacts" => [[c...] for c in contacts]))
 end
