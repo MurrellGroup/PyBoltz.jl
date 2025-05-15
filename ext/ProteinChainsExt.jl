@@ -8,7 +8,7 @@ function PyBoltz.predict(input, ::Type{ProteinStructure}; options...)
     return PyBoltz.predict(input, MolecularStructure; options...) .|> ProteinStructure
 end
 
-function PyBoltz.predict(input::MolecularInput, ::Type{ProteinStructure}; options...)
+function PyBoltz.predict(input::PyBoltz.Schema.MolecularInput, ::Type{ProteinStructure}; options...)
     return PyBoltz.predict(input, MolecularStructure; options...) |> ProteinStructure
 end
 
