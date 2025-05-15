@@ -34,35 +34,6 @@ using BioStructures: MolecularStructure
 predicted_structure = predict(input, MolecularStructure)
 ```
 
-```julia
-using PyBoltz, PyBoltz.Schema
-
-inputs = [
-    MolecularInput(
-        name = "Z",
-        sequences = [
-            protein(id="A", sequence="TTCCPSIVARSNFNVCRLPGTPEAICATYTGCIIIPGATCPGDYAN", msa="empty"),
-        ]
-    ),
-    MolecularInput(
-        name = "Y",
-        sequences = [
-            protein(id="B", sequence="TTCCPSIVARSNFNVCRLPGTPE", msa="empty"),
-        ]
-    ),
-    MolecularInput(
-        name = "X",
-        sequences = [
-            protein(id="C", sequence="TTCCPSIVARSN", msa="empty"),
-        ]
-    )
-]
-
-using BioStructures: MolecularStructure
-
-predicted_structures = predict(inputs, MolecularStructure)
-```
-
 ### `boltz predict` command binding
 
 ```julia
