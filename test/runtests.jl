@@ -5,8 +5,7 @@ using BioAlignments
 using BioSequences
 using BioStructures
 
-include("TMscore.jl") # remove this once TMscore.jl is registered: https://github.com/JuliaRegistries/General/pull/130867
-using .TMscore
+using TMscore
 
 # ENV["PyBoltz_TEST_ACCELERATOR"] = "gpu"
 

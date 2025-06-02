@@ -19,24 +19,37 @@ function PyBoltz.predict(input, ::Type{MolecularStructure}; options...)
             options...)
         prediction_paths = readdir(joinpath(out_dir, only(readdir(out_dir)), "predictions"); join=true)
         prediction_names = basename.(prediction_paths)
-        structures = MolecularStructure[]
-        perm, structure_names = if all(name -> startswith(name, PyBoltz.PYBOLTZ_INPUT_INDEX_PREFIX), prediction_names)
-            indices = Int[]
-            structure_names = String[]
+
+        local results
+        if all(name -> startswith(name, PyBoltz.PYBOLTZ_INPUT_INDEX_PREFIX), prediction_names)
+            # output vector needs to match input vector (with possible missing values)
+            @assert input isa AbstractVector{PyBoltz.Schema.MolecularInput}
+            results = Union{MolecularStructure,Missing}[fill(missing, length(input))...]
             for prediction_name in prediction_names
                 index, name = split(split(prediction_name, PyBoltz.PYBOLTZ_INPUT_INDEX_PREFIX, limit=2)[2], "_", limit=2)
-                push!(indices, parse(Int, index))
-                push!(structure_names, name)
+                idx = parse(Int, index)
+                prediction_path = joinpath(joinpath(out_dir, only(readdir(out_dir)), "predictions"), prediction_name)
+                cif_path = joinpath(prediction_path, basename(prediction_path)*"_model_0.cif")
+                try
+                    results[idx] = read_boltz_cif(cif_path, name)
+                catch e
+                    @warn e
+                    results[idx] = missing
+                end
             end
-            sortperm(indices), structure_names
         else
-            collect(1:length(prediction_names)), prediction_names
+            results = Union{MolecularStructure,Missing}[]
+            for prediction_path in prediction_paths
+                cif_path = joinpath(prediction_path, basename(prediction_path)*"_model_0.cif")
+                try
+                    push!(results, read_boltz_cif(cif_path, basename(prediction_path)))
+                catch e
+                    @warn e
+                    push!(results, missing)
+                end
+            end
         end
-        for (structure_name, prediction_path) in zip(structure_names, prediction_paths)
-            cif_path = joinpath(prediction_path, basename(prediction_path)*"_model_0.cif")
-            push!(structures, read_boltz_cif(cif_path, structure_name))
-        end
-        return structures[perm]
+        return results
     end
 end
 
