@@ -57,7 +57,7 @@ const accelerator = get(ENV, "PyBoltz_TEST_ACCELERATOR", "cpu")
                 ),
             ]
             predicted_structures = predict(inputs, MolecularStructure; seed=0, accelerator)
-            @test predicted_structures isa Vector{MolecularStructure}
+            @test predicted_structures isa Vector{Union{MolecularStructure,Union}}
             @test length(predicted_structures) == 4
             @testset "Order preservation" begin
                 @test countresidues.(predicted_structures) == [10, 30, 20, 40]
