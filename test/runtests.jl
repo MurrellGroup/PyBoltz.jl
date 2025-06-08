@@ -57,7 +57,7 @@ const accelerator = get(ENV, "PyBoltz_TEST_ACCELERATOR", "cpu")
                 ),
             ]
             predicted_structures = predict(inputs, MolecularStructure; seed=0, accelerator)
-            @test predicted_structures isa Vector{Union{MolecularStructure,Union}}
+            @test predicted_structures isa Vector{Union{Missing,MolecularStructure}}
             @test length(predicted_structures) == 4
             @testset "Order preservation" begin
                 @test countresidues.(predicted_structures) == [10, 30, 20, 40]
@@ -68,9 +68,10 @@ const accelerator = get(ENV, "PyBoltz_TEST_ACCELERATOR", "cpu")
 
     @testset "MSA run" begin
         mktempdir() do dir
+            sequence = randaaseq(15)
             input = MolecularInput(
                 sequences = [
-                    protein(; id="A", sequence=randaaseq(15), msa=[randaaseq(15) for _ in 1:10]),
+                    protein(; id="A", sequence, msa=[sequence; [randaaseq(15) for _ in 1:10]]),
                 ]
             )
             predicted_structure = predict(input, MolecularStructure; seed=0, accelerator)
