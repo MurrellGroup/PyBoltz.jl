@@ -15,7 +15,7 @@ const accelerator = get(ENV, "PyBoltz_TEST_ACCELERATOR", "cpu")
 
     @testset "Single structure run" begin
         mktempdir() do dir
-            structure = retrievepdb("1EJG"; dir)
+            structure = retrievepdb("1TIT"; dir)
             sequence = LongAA(structure["A"], standardselector)
             input = MolecularInput(
                 sequences = [
