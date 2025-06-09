@@ -4,9 +4,6 @@
 [![Build Status](https://github.com/MurrellGroup/PyBoltz.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/MurrellGroup/PyBoltz.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/MurrellGroup/PyBoltz.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/MurrellGroup/PyBoltz.jl)
 
-> [!WARNING]
-> Boltz currently fails when using CPU as accelerator (and thus also GitHub's default CI). See https://github.com/MurrellGroup/PyBoltz.jl/issues/2 for tracker.
-
 Julia bindings for Python's [boltz](https://github.com/jwohlwend/boltz) for biomolecular structure prediction.
 
 ## Installation
