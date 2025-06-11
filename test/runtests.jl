@@ -6,7 +6,7 @@ using BioSequences
 using BioStructures
 using TMscore
 
-ENV["PyBoltz_TEST_ACCELERATOR"] = "gpu"
+# ENV["PyBoltz_TEST_ACCELERATOR"] = "gpu"
 
 const accelerator = get(ENV, "PyBoltz_TEST_ACCELERATOR", "cpu")
 
