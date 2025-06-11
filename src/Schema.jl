@@ -1,18 +1,18 @@
 module Schema
 
-export MolecularInput
+export BoltzInput
 export protein, dna, rna, ligand
 export bond, pocket
 
 const BOLTZ_SCHEMA_VERSION = 1
 
 """
-    MolecularInput
+    BoltzInput
 
 A dictionary object that can be written to a YAML file.
 
 Implemented according to the schema definition in the
-[boltz documentation](https://github.com/jwohlwend/boltz/blob/a9b3abc2c1f90f26b373dd1bcb7afb5a3cb40293/docs/prediction.md),
+[boltz documentation](https://github.com/jwohlwend/boltz/blob/744b4aecb6b5e847a25692ced07c328e7995ee33/docs/prediction.md),
 allowing for easy in-memory construction of the schema.
 
 # Additions
@@ -28,7 +28,7 @@ allowing for easy in-memory construction of the schema.
 ```julia
 using PyBoltz.Schema
 
-input1 = MolecularInput(
+input1 = BoltzInput(
     name = "example1", # optional name YAML file (and thus output pdb/cif file)
     sequences = [
         protein(
@@ -47,7 +47,7 @@ input1 = MolecularInput(
     ]
 )
 
-input2 = MolecularInput(
+input2 = BoltzInput(
     sequences = [
         protein(
             id = ["A1"],
@@ -67,25 +67,33 @@ input2 = MolecularInput(
 )
 ```
 """
-struct MolecularInput <: AbstractDict{String,Any}
+struct BoltzInput <: AbstractDict{String,Any}
     dict::Dict{String,Any}
 end
 
-function MolecularInput(;
+function BoltzInput(;
     sequences,
     constraints = nothing,
+    templates = nothing,
+    properties = nothing,
     name = nothing
 )
     dict = Dict{String,Any}("version" => BOLTZ_SCHEMA_VERSION, "sequences" => sequences)
     !isnothing(constraints) && (dict["constraints"] = constraints)
+    !isnothing(templates) && (dict["templates"] = templates)
+    !isnothing(properties) && (dict["properties"] = properties)
     !isnothing(name) && (dict["name"] = name)
-    return MolecularInput(dict)
+    return BoltzInput(dict)
 end
 
-Base.length(input::MolecularInput) = length(input.dict)
-Base.iterate(input::MolecularInput, args...) = iterate(input.dict, args...)
-Base.getindex(input::MolecularInput, key::AbstractString) = input.dict[key]
-Base.get(input::MolecularInput, key::AbstractString, default) = get(input.dict, key, default)
+Base.length(input::BoltzInput) = length(input.dict)
+Base.iterate(input::BoltzInput, args...) = iterate(input.dict, args...)
+Base.getindex(input::BoltzInput, key::AbstractString) = input.dict[key]
+Base.get(input::BoltzInput, key::AbstractString, default) = get(input.dict, key, default)
+
+# deprecated
+const MolecularInput = BoltzInput
+export MolecularInput
 
 ## sequences
 
@@ -202,20 +210,66 @@ function bond(;
 end
 
 """
-    pocket(; binder, contacts)
+    pocket(; binder, contacts, max_distance=nothing)
 
 ```julia
 using PyBoltz.Schema: pocket
 # binder is a chain_id
 # contacts is a vector of vectors of (chain_id, residue_index)
-pocket(binder="A", contacts=[["B", 1], ["C", 2]])
+pocket(binder="A", contacts=[("B", 1), ("C", 2)])
 ```
 """
 function pocket(;
     binder::AbstractString,
-    contacts::AbstractVector{<:Tuple{AbstractString,Integer}}
+    contacts::AbstractVector{<:Tuple{AbstractString,Any}},
+    max_distance::Union{Real,Nothing} = nothing,
 )
-    return Dict("pocket" => Dict{String,Any}("binder" => binder, "contacts" => [[c...] for c in contacts]))
+    dict = Dict("pocket" => Dict{String,Any}(
+        "binder" => binder,
+        "contacts" => [[c...] for c in contacts]))
+    !isnothing(max_distance) && (dict["max_distance"] = max_distance)
+    return dict
+end
+
+"""
+    contact(; token1, token2, max_distance=nothing)
+"""
+function contact(;
+    token1::Tuple{AbstractString,Any},
+    token2::Tuple{AbstractString,Any},
+    max_distance::Union{Real,Nothing} = nothing,
+)
+    dict = Dict("contact" => Dict(
+        "token1" => token1,
+        "token2" => token2))
+    !isnothing(max_distance) && (dict["max_distance"] = max_distance)
+    return dict
+end
+
+## templates
+
+"""
+    template(; cif, chain_id=nothing, template_id=nothing)
+"""
+function template(;
+    cif::AbstractString,
+    chain_id::Union{AbstractString,AbstractVector{<:AbstractString},Nothing} = nothing,
+    template_id::Union{AbstractString,AbstractVector{<:AbstractString},Nothing} = nothing,
+)
+    dict = Dict{String,Any}("cif" => cif)
+    !isnothing(chain_id) && (dict["chain_id"] = chain_id)
+    !isnothing(template_id) && (dict["template_id"] = template_id)
+end
+
+## properties
+
+"""
+    affinity(; binder)
+"""
+function affinity(;
+    binder::AbstractString
+)
+    return Dict("affinity" => Dict("binder" => binder))
 end
 
 end

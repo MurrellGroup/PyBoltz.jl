@@ -11,7 +11,7 @@ function PyBoltz.predict(input, ::Type{ProteinStructure}; options...)
     return PyBoltz.predict(input, MolecularStructure; options...) .|> to_structure
 end
 
-function PyBoltz.predict(input::PyBoltz.Schema.MolecularInput, ::Type{ProteinStructure}; options...)
+function PyBoltz.predict(input::PyBoltz.Schema.BoltzInput, ::Type{ProteinStructure}; options...)
     return PyBoltz.predict(input, MolecularStructure; options...) |> to_structure
 end
 

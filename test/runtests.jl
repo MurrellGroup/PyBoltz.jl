@@ -4,10 +4,9 @@ using Test
 using BioAlignments
 using BioSequences
 using BioStructures
-
 using TMscore
 
-# ENV["PyBoltz_TEST_ACCELERATOR"] = "gpu"
+ENV["PyBoltz_TEST_ACCELERATOR"] = "gpu"
 
 const accelerator = get(ENV, "PyBoltz_TEST_ACCELERATOR", "cpu")
 
@@ -17,7 +16,7 @@ const accelerator = get(ENV, "PyBoltz_TEST_ACCELERATOR", "cpu")
         mktempdir() do dir
             structure = retrievepdb("1TIT"; dir)
             sequence = LongAA(structure["A"], standardselector)
-            input = MolecularInput(
+            input = BoltzInput(
                 sequences = [
                     protein(; id="A", sequence, msa="empty")
                 ]
@@ -31,25 +30,25 @@ const accelerator = get(ENV, "PyBoltz_TEST_ACCELERATOR", "cpu")
     @testset "Directory run" begin
         mktempdir() do dir
             inputs = [
-                MolecularInput(
+                BoltzInput(
                     name = "Z",
                     sequences = [
                         protein(; id="A", sequence=randaaseq(5), msa="empty"),
                     ]
                 ),
-                MolecularInput(
+                BoltzInput(
                     name = "X",
                     sequences = [
                         protein(; id="A", sequence=randaaseq(15), msa="empty"),
                     ]
                 ),
-                MolecularInput(
+                BoltzInput(
                     name = "Y",
                     sequences = [
                         protein(; id="A", sequence=randaaseq(10), msa="empty"),
                     ]
                 ),
-                MolecularInput(
+                BoltzInput(
                     name = "W",
                     sequences = [
                         protein(; id="A", sequence=randaaseq(20), msa="empty"),
@@ -69,7 +68,7 @@ const accelerator = get(ENV, "PyBoltz_TEST_ACCELERATOR", "cpu")
     @testset "MSA run" begin
         mktempdir() do dir
             sequence = randaaseq(5)
-            input = MolecularInput(
+            input = BoltzInput(
                 sequences = [
                     protein(; id="A", sequence, msa=[sequence; [randaaseq(5) for _ in 1:10]]),
                 ]

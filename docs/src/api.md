@@ -9,12 +9,12 @@ predict
 ## `Schema` submodule
 
 ```@docs
-PyBoltz.Schema.MolecularInput
+PyBoltz.Schema.BoltzInput
 ```
 
 ### Sequences
 
-The following sequence types go into the `sequences` vector keyword argument of `MolecularInput`.
+The following sequence types go into the `sequences` vector keyword argument of `BoltzInput`.
 
 ```@docs
 PyBoltz.Schema.protein
@@ -25,7 +25,7 @@ PyBoltz.Schema.ligand
 
 ### Constraints
 
-The following constraint types go into the `constraints` vector keyword argument of `MolecularInput`.
+The following constraint types go into the `constraints` vector keyword argument of `BoltzInput`.
 
 ```@docs
 PyBoltz.Schema.bond

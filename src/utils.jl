@@ -25,7 +25,7 @@ function write_alignment(path::AbstractString, alignment::Vector{<:AbstractStrin
     end
 end
 
-function MSAs_to_files!(input::Schema.MolecularInput, dir::AbstractString; prefix="")
+function MSAs_to_files!(input::Schema.BoltzInput, dir::AbstractString; prefix="")
     for (i, type_dict) in enumerate(input["sequences"])
         type, seq_dict = only(type_dict)
         type == "protein" || continue # only proteins have msas

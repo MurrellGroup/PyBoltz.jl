@@ -6,8 +6,8 @@ Run Boltz-1 prediction with the given input, output type, and options.
 # Input types
 
 - `AbstractString`: Path to a FASTA/YAML file or directory (for batching).
-- `MolecularInput`: A single [`PyBoltz.Schema.MolecularInput`](@ref) object.
-- `Vector{MolecularInput}`: A vector of [`PyBoltz.Schema.MolecularInput`](@ref) objects for batching.
+- `BoltzInput`: A single [`PyBoltz.Schema.BoltzInput`](@ref) object.
+- `Vector{BoltzInput}`: A vector of [`PyBoltz.Schema.BoltzInput`](@ref) objects for batching.
 
 # Output types
 
@@ -16,8 +16,8 @@ By default, raw results will be written to disk in the `out_dir` directory (see 
 For convenience, `output_type` can be provided as a second argument to reduce manual file I/O.
 
 If `output_type` is provided, the function will return a
-single object if a `MolecularInput` was provided as input,
-otherwise a vector if an `AbstractString` or `Vector{MolecularInput}` was provided.
+single object if a `BoltzInput` was provided as input,
+otherwise a vector if an `AbstractString` or `Vector{BoltzInput}` was provided.
 
 The following output types are supported:
 
@@ -46,35 +46,28 @@ Defaults to a Scratch.jl-backed directory created at module init; call `clear_ca
 - `msa_pairing_strategy::String`: 'greedy' or 'complete'; requires `use_msa_server=true`.
 
 ## Boolean Flags
-- `verbose::Bool`: Whether to print boltz logs to stdout. Default: true.
 - `write_full_pae::Bool`: Dump PAE to a npz file. Default: true.
 - `write_full_pde::Bool`: Dump PDE to a npz file. Default: false.
 - `override::Bool`: Override existing predictions. Default: false.
 - `use_msa_server::Bool`: Use MMSeqs2 server for MSA generation. Default: false.
 """
-function predict(input_path::AbstractString; verbose=true, _prefix_index=false, options...)
-    @assert !_prefix_index "`_prefix_index` is reserved for internal use"
-    cmd = predict_cmd(input_path; options...)
-    if verbose
-        run(cmd)
-    else
-        read(cmd, String)
-    end
+function predict(input_path::AbstractString; options...)
+    run(predict_cmd(input_path; options...))
     return nothing
 end
 
 
 const PYBOLTZ_INPUT_INDEX_PREFIX = "__pyboltz_index_"
 
-function predict(inputs::AbstractVector{Schema.MolecularInput}; _prefix_index=false, options...)
+function predict(inputs::AbstractVector{Schema.BoltzInput}; options...)
     mktempdir() do dir
         input_dir = joinpath(dir, "inputs")
         mkdir(input_dir)
         msa_dir = joinpath(dir, "msas")
         mkdir(msa_dir)
         for (i, input) in enumerate(inputs)
-            name = get(input, "name", "noname")
-            prefix = _prefix_index ? "$(PYBOLTZ_INPUT_INDEX_PREFIX)$(i)_" : ""
+            name = get(input, "name", "pyboltz_structure_$i")
+            prefix = get(task_local_storage(), "pyboltz_remember_ordering", false) ? "$(PYBOLTZ_INPUT_INDEX_PREFIX)$(i)_" : ""
             path = joinpath(input_dir, "$prefix$name.yaml")
             YAML.write_file(path, MSAs_to_files!(deepcopy(input), msa_dir; prefix=prefix))
         end
@@ -83,4 +76,4 @@ function predict(inputs::AbstractVector{Schema.MolecularInput}; _prefix_index=fa
     return nothing
 end
 
-predict(input::Schema.MolecularInput; options...) = predict([input]; options...)
+predict(input::Schema.BoltzInput; options...) = predict([input]; options...)

@@ -13,7 +13,6 @@ end
 function PyBoltz.predict(input, ::Type{MolecularStructure}; options...)
     mktempdir() do out_dir
         predict(input;
-            _prefix_index=(input isa AbstractVector{PyBoltz.Schema.MolecularInput}),
             out_dir,
             output_format="mmcif",
             options...)
@@ -21,9 +20,9 @@ function PyBoltz.predict(input, ::Type{MolecularStructure}; options...)
         prediction_names = basename.(prediction_paths)
 
         local results
-        if all(name -> startswith(name, PyBoltz.PYBOLTZ_INPUT_INDEX_PREFIX), prediction_names)
+        if get(task_local_storage(), "pyboltz_remember_ordering", false)
             # output vector needs to match input vector (with possible missing values)
-            @assert input isa AbstractVector{PyBoltz.Schema.MolecularInput}
+            @assert input isa AbstractVector{PyBoltz.Schema.BoltzInput}
             results = Union{MolecularStructure,Missing}[fill(missing, length(input))...]
             for prediction_name in prediction_names
                 index, name = split(split(prediction_name, PyBoltz.PYBOLTZ_INPUT_INDEX_PREFIX, limit=2)[2], "_", limit=2)
@@ -33,7 +32,7 @@ function PyBoltz.predict(input, ::Type{MolecularStructure}; options...)
                 try
                     results[idx] = read_boltz_cif(cif_path, name)
                 catch e
-                    @warn e
+                    @error name
                     results[idx] = missing
                 end
             end
@@ -44,16 +43,25 @@ function PyBoltz.predict(input, ::Type{MolecularStructure}; options...)
                 try
                     push!(results, read_boltz_cif(cif_path, basename(prediction_path)))
                 catch e
-                    @warn e
+                    @error name
                     push!(results, missing)
                 end
             end
+        end
+        if any(ismissing, results)
+            @error "$(count(ismissing, results)) out of $(length(results)) boltz predictions errored."
         end
         return results
     end
 end
 
-function PyBoltz.predict(input::PyBoltz.Schema.MolecularInput, ::Type{MolecularStructure}; options...)
+function PyBoltz.predict(input::AbstractVector{PyBoltz.Schema.BoltzInput}, ::Type{MolecularStructure}; options...)
+    task_local_storage("pyboltz_remember_ordering", true) do
+        @invoke predict(input::Any, MolecularStructure; options...)
+    end
+end
+
+function PyBoltz.predict(input::PyBoltz.Schema.BoltzInput, ::Type{MolecularStructure}; options...)
     return PyBoltz.predict([input], MolecularStructure; options...) |> only
 end
 

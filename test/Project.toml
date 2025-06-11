@@ -1,0 +1,7 @@
+[deps]
+BioAlignments = "00701ae9-d1dc-5365-b64a-a3a3ebf5695e"
+BioSequences = "7e6ae17a-c86d-528c-b3b9-7f778a29fe59"
+BioStructures = "de9282ab-8554-53be-b2d6-f6c222edabfc"
+PyBoltz = "0bca4874-a2b8-4dca-bc03-d2d86e344f1f"
+TMscore = "6e960f36-814a-4ceb-8c87-6ab5da0e9bff"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

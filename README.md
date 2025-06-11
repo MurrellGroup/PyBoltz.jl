@@ -20,7 +20,7 @@ pkg"add PyBoltz"
 ```julia
 using PyBoltz, PyBoltz.Schema
 
-input = MolecularInput(
+input = BoltzInput(
     sequences = [
         protein(id="A", sequence="TTCCPSIVARSNFNVCRLPGTPEAICATYTGCIIIPGATCPGDYAN", msa="empty"),
     ]
