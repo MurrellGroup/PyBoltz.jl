@@ -30,4 +30,17 @@ The following constraint types go into the `constraints` vector keyword argument
 ```@docs
 PyBoltz.Schema.bond
 PyBoltz.Schema.pocket
+PyBoltz.Schema.contact
+```
+
+## Templates
+
+```@docs
+PyBoltz.Schema.template
+```
+
+## Properties
+
+```@docs
+PyBoltz.Schema.affinity
 ```
