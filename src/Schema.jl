@@ -2,7 +2,9 @@ module Schema
 
 export BoltzInput
 export protein, dna, rna, ligand
-export bond, pocket
+export bond, pocket, contact
+export template
+export affinity
 
 const BOLTZ_SCHEMA_VERSION = 1
 
