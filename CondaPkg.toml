@@ -1,3 +1,5 @@
+[deps]
+python = ">=3.10,<3.13"
 
 [pip.deps]
-boltz = "==2.2.0"
+boltz = "~=2.2"
