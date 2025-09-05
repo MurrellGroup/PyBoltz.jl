@@ -1,7 +1,7 @@
 name = "PyBoltz"
 uuid = "0bca4874-a2b8-4dca-bc03-d2d86e344f1f"
 authors = ["Anton Oresten and Aron Stålmarck"]
-version = "0.2.1"
+version = "0.2.2"
 
 [deps]
 Compat = "34da2185-b29b-5c13-b0c7-acf172513d20"
