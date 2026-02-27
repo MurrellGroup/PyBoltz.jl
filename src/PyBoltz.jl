@@ -14,4 +14,6 @@ include("utils.jl")
 include("predict.jl")
 export predict
 
+include("IPSAE/ipsae.jl")
+
 end
